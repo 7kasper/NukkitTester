@@ -1,0 +1,16 @@
+name: NukkitTester
+main: nl.dev7kasper.NukkitTester.main.NukkitTester
+version: "1.0.0"
+api: ["1.0.0"]
+
+load: POSTWORLD
+author: 7kasper
+description: Testplugin for Nukkit, used for feature tests.
+website: https://github.com/7kasper/NukkitTester
+commands:
+  leash:
+    description: Used tot test leashing.
+    usage: "/leash"
+  unleash:
+    description: Used tot test unleashing.
+    usage: "/unleash"
