@@ -35,10 +35,11 @@ public class NukkitTester extends PluginBase implements Listener {
                 try {
                     if(s.isPlayer()) {
                     	Player p = (Player) s;
-                    	s.sendMessage("Leashing the shit outta everyone.");
-                    	for(Entity e : p.getLevel().getNearbyEntities(p.getBoundingBox(), p)) {
+                    	s.sendMessage("Leashing the sh*t outta everyone.");
+                    	for(Entity e : p.getLevel().getEntities()) {
+                    		e.setDataFlag(0, 28, true);
                     		e.setDataProperty(new LongEntityData(38, p.getId()));
-                    		s.sendMessage("Leashed " + Long.toString(e.getId()) + "!");
+                    		s.sendMessage("Leashed " + Long.toString(e.getId()) + " to " + p.getId() + "!");
                     	}
                     } else {
                     	s.sendMessage("Whattcha doing not being a player?");
@@ -51,8 +52,11 @@ public class NukkitTester extends PluginBase implements Listener {
                 try {
                     if(s.isPlayer()) {
                     	Player p = (Player) s;
-                    	for(Entity e : p.getLevel().getNearbyEntities(p.getBoundingBox(), p)) {
+                    	s.sendMessage("Unleashing the sh*t outta everyone.");
+                    	for(Entity e : p.getLevel().getEntities()) {
+                    		e.setDataFlag(0, 28, false);
                     		e.setDataProperty(new LongEntityData(38, -1));
+                    		s.sendMessage("(Tried) Unleashing " + Long.toString(e.getId()) + " from " + p.getId() + "!");
                     	}
                     } else {
                     	s.sendMessage("Whattcha doing not being a player?");
