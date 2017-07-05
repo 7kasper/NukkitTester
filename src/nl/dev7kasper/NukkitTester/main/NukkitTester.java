@@ -30,7 +30,7 @@ public class NukkitTester extends PluginBase implements Listener {
 
     @Override
     public boolean onCommand(CommandSender s, Command command, String label, String[] args) {
-        switch (command.getName()) {
+        switch (command.getName().toLowerCase()) {
             case "leash":
                 try {
                     if(s.isPlayer()) {
@@ -52,6 +52,23 @@ public class NukkitTester extends PluginBase implements Listener {
                 try {
                     if(s.isPlayer()) {
                     	Player p = (Player) s;
+                    	if(args.length > 1) {
+                    		if(args[0].equalsIgnoreCase("toself")) {
+                    			s.sendMessage("Unleashing the sh*t outta everyone, self-style");
+                            	for(Entity e : p.getLevel().getEntities()) {
+                            		e.setDataProperty(new LongEntityData(38, e.getId()));
+                            		s.sendMessage("(Tried) Unleashing " + Long.toString(e.getId()) + " to " + e.getId() + "!");
+                            	}
+                            	break;
+                    		} else if(args[0].equalsIgnoreCase("respawn")){
+                    			s.sendMessage("Unleashing the sh*t outta everyone, respawn-style");
+                            	for(Entity e : p.getLevel().getEntities()) {
+                            		e.respawnToAll();
+                            		s.sendMessage("(Tried) Unleashing " + Long.toString(e.getId()) + " by respawning?");
+                            	}
+                            	break;
+                    		}
+                    	}
                     	s.sendMessage("Unleashing the sh*t outta everyone.");
                     	for(Entity e : p.getLevel().getEntities()) {
                     		e.setDataFlag(0, 28, false);
