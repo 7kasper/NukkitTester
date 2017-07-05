@@ -52,7 +52,7 @@ public class NukkitTester extends PluginBase implements Listener {
                 try {
                     if(s.isPlayer()) {
                     	Player p = (Player) s;
-                    	if(args.length > 1) {
+                    	if(args.length > 0) {
                     		if(args[0].equalsIgnoreCase("toself")) {
                     			s.sendMessage("Unleashing the sh*t outta everyone, self-style");
                             	for(Entity e : p.getLevel().getEntities()) {
