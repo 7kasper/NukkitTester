@@ -15,7 +15,7 @@ public class NukkitTester extends PluginBase implements Listener {
 	
     @Override
     public void onEnable() {
-        this.getLogger().info(TextFormat.DARK_GREEN + "NukkitTester ON");
+        this.getLogger().info(TextFormat.YELLOW + "NukkitTester ON");
 
         this.getLogger().info(String.valueOf(this.getDataFolder().mkdirs()));
 
@@ -25,7 +25,7 @@ public class NukkitTester extends PluginBase implements Listener {
     
     @Override
     public void onDisable() {
-        this.getLogger().info(TextFormat.DARK_RED + "NukkitTester OFF");
+        this.getLogger().info(TextFormat.YELLOW + "NukkitTester OFF");
     }
 
     @Override
@@ -37,12 +37,12 @@ public class NukkitTester extends PluginBase implements Listener {
                     	Player p = (Player) s;
                     	s.sendMessage("Leashing the sh*t outta everyone.");
                     	for(Entity e : p.getLevel().getEntities()) {
-                    		e.setDataFlag(0, 28, true);
-                    		e.setDataProperty(new LongEntityData(38, p.getId()));
+                    		e.setDataFlag(Entity.DATA_FLAGS, Entity.DATA_FLAG_LEASHED, true);
+                    		e.setDataProperty(new LongEntityData(Entity.DATA_LEAD_HOLDER_EID, p.getId()));
                     		s.sendMessage("Leashed " + Long.toString(e.getId()) + " to " + p.getId() + "!");
                     	}
                     } else {
-                    	s.sendMessage("Whattcha doing not being a player?");
+                    	s.sendMessage(TextFormat.DARK_RED + "[Error] Whattcha doing not being a player?");
                     }
                 } catch (Exception e) {
                     throw new RuntimeException(e);
@@ -53,30 +53,52 @@ public class NukkitTester extends PluginBase implements Listener {
                     if(s.isPlayer()) {
                     	Player p = (Player) s;
                     	if(args.length > 0) {
-                    		if(args[0].equalsIgnoreCase("toself")) {
-                    			s.sendMessage("Unleashing the sh*t outta everyone, self-style");
-                            	for(Entity e : p.getLevel().getEntities()) {
-                            		e.setDataProperty(new LongEntityData(38, e.getId()));
-                            		s.sendMessage("(Tried) Unleashing " + Long.toString(e.getId()) + " to " + e.getId() + "!");
-                            	}
-                            	break;
-                    		} else if(args[0].equalsIgnoreCase("respawn")){
-                    			s.sendMessage("Unleashing the sh*t outta everyone, respawn-style");
-                            	for(Entity e : p.getLevel().getEntities()) {
-                            		e.respawnToAll();
-                            		s.sendMessage("(Tried) Unleashing " + Long.toString(e.getId()) + " by respawning?");
-                            	}
-                            	break;
+                    		switch(args[0].toLowerCase()) {
+                    			case "toself":
+                        			s.sendMessage("Unleashing the sh*t outta everyone, selfy style.");
+                                	for(Entity e : p.getLevel().getEntities()) {
+                                		e.setDataProperty(new LongEntityData(Entity.DATA_LEAD_HOLDER_EID, e.getId()));
+                                		s.sendMessage("(Tried) Unleashing " + Long.toString(e.getId()) + " to " + e.getId() + "!");
+                                	}
+                    			return true;
+                    			case "respawn":
+                        			s.sendMessage("Unleashing the sh*t outta everyone, respawn-style.");
+                                	for(Entity e : p.getLevel().getEntities()) {
+                                		e.respawnToAll();
+                                		s.sendMessage("(Tried) Unleashing " + Long.toString(e.getId()) + " by respawning?");
+                                	}
+                				return true;
+                    			case "zero":
+                    			case "0":
+                        			s.sendMessage("Unleashing the sh*t outta everyone, " + TextFormat.BLACK + "Zorro" + TextFormat.RESET + " style.");
+                                	for(Entity e : p.getLevel().getEntities()) {
+                                		e.setDataFlag(Entity.DATA_FLAGS, Entity.DATA_FLAG_LEASHED, false);
+                                		e.setDataProperty(new LongEntityData(Entity.DATA_LEAD_HOLDER_EID, 0));
+                                		s.sendMessage("(Tried) Unleashing " + Long.toString(e.getId()) + " by zeroing.");
+                                	}
+                				return true;
+                    			case "chuck":
+                    				if(args.length > 1 && args[1].equalsIgnoreCase("norris")) {
+                            			s.sendMessage("Unleashing the sh*t outta everyone, " + TextFormat.YELLOW + "Chuck Norris" + TextFormat.RESET + " style!");
+                                    	for(Entity e : p.getLevel().getEntities()) {
+                                    		e.setDataFlag(Entity.DATA_FLAGS, Entity.DATA_FLAG_LEASHED, false);
+                                    		e.setDataProperty(new LongEntityData(Entity.DATA_LEAD_HOLDER_EID, -1));
+                                    		e.despawnFromAll();
+                                    		e.spawnToAll();
+                                    	}
+                                    	return true;
+                    				}
+                    				break;
                     		}
                     	}
                     	s.sendMessage("Unleashing the sh*t outta everyone.");
                     	for(Entity e : p.getLevel().getEntities()) {
-                    		e.setDataFlag(0, 28, false);
-                    		e.setDataProperty(new LongEntityData(38, -1));
+                    		e.setDataFlag(Entity.DATA_FLAGS, Entity.DATA_FLAG_LEASHED, false);
+                    		e.setDataProperty(new LongEntityData(Entity.DATA_LEAD_HOLDER_EID, -1));
                     		s.sendMessage("(Tried) Unleashing " + Long.toString(e.getId()) + " from " + p.getId() + "!");
                     	}
                     } else {
-                    	s.sendMessage("Whattcha doing not being a player?");
+                    	s.sendMessage(TextFormat.DARK_RED + "[Error] Whattcha doing not being a player?");
                     }
                 } catch (Exception e) {
                     throw new RuntimeException(e);
