@@ -100,7 +100,6 @@ public class NukkitTester extends PluginBase implements Listener {
                                     	}
                                     	return true;
                     				}
-                    				break;
                     			case "-1":
                                 	s.sendMessage("Unleashing the sh*t outta everyone.");
                                 	for(Entity e : p.getLevel().getEntities()) {
@@ -110,7 +109,7 @@ public class NukkitTester extends PluginBase implements Listener {
 	                                		s.sendMessage("(Tried) Unleashing " + Long.toString(e.getId()) + " from " + p.getId() + "!");
                                 		}
                                 	}
-                    			break;
+                                	return true;
                     		}
                     	}
                     	s.sendMessage("Unleashing the sh*t outta everyone.");
